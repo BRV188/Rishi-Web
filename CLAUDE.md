@@ -19,7 +19,6 @@ CLAUDE.md
 ## Serving locally
 
 ```bash
-cd rishi-portfolio
 python3 -m http.server 8090
 # open http://localhost:8090
 ```
@@ -61,8 +60,17 @@ Desktop only (`@media (pointer: fine)`). Two elements: `#cursor-ring` (28px blue
 - All font sizes use `clamp(min, vw, max)` — no fixed breakpoints for type.
 - Hero name minimum is 28px (`clamp(28px, 9.5vw, 130px)`) — sized so "VISHWAKARMA" fits on one line at 375px viewport.
 - Work rows: 3-col (number / title / tags) at desktop → 2-col at 860px (tags hidden) → tighter 2-col at 480px.
+- Tools chips: flex-wrap grid (no fixed breakpoint needed to avoid overflow), with a 480px rule that tightens chip padding/gap/icon size for mobile.
 - iOS safe areas handled via `env(safe-area-inset-*)` on `body` padding and `viewport-fit=cover`.
+
+## Section order
+
+Hero → About (01) → Tools (02) → Philosophy (03) → Work (04) → Contact (05). Section numbers in each `.section-tag` must stay sequential if sections are reordered or added/removed.
 
 ## Content updates
 
-All content is hardcoded in `index.html`. To add a work category, copy a `.work-row` block and increment the index. To update social links, edit the `.contact-link` anchors in the contact section.
+All content is hardcoded in `index.html`.
+
+- **Work**: each `.work-row` is an `<a>` (clickable, links out to the relevant portfolio/drive/site for that category) — copy a block and increment the index to add a category.
+- **Tools**: grouped under `.tools-group` blocks (Adobe Creative Suite / Editing & Design Apps / AI Workflow), each a `.tools-grid` of `.tool-chip` pills. Icons are official brand SVGs (Simple Icons, `fill="currentColor"`) where one exists; tools without an official monochrome mark (CapCut, VN Editor, Stable Diffusion) use hand-drawn stroke icons (`.tool-icon--stroke`) kept visually consistent with the rest of the icon set.
+- **Contact**: social links in `.contact-links` also carry official brand SVG icons (same Simple Icons convention) before the label. Edit the `.contact-link` anchors to update social links.

@@ -411,6 +411,9 @@ body.cur-link #cursor-dot {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 0.55s ease, transform 0.55s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .work-row.in-view { opacity: 1; transform: translateY(0); }
@@ -459,6 +462,12 @@ body.cur-link #cursor-dot {
 }
 @media (max-width: 480px) {
   .work-row { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px 0; }
+  .tools-group { margin-top: 36px; }
+  .tools-grid { gap: 12px 10px; }
+  .tool-chip { padding: 9px 14px; gap: 8px; }
+  .tool-icon { width: 16px; height: 16px; }
+  .tool-icon--stroke { width: 15px; height: 15px; }
+  .tool-chip span { font-size: 12px; }
 }
 
 .featured-video-link {
@@ -491,6 +500,64 @@ body.cur-link #cursor-dot {
   transition: transform 0.25s ease;
 }
 .featured-video-link:hover .arrow { transform: translateX(5px); }
+
+/* ─────────────────────────────────────────
+   TOOLS
+───────────────────────────────────────── */
+.tools-group { margin-top: 48px; }
+.tools-group:first-of-type { margin-top: 0; }
+
+.tools-cat {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.tools-sub {
+  font-size: clamp(14px, 1.6vw, 17px);
+  line-height: 1.6;
+  max-width: 560px;
+  color: var(--muted);
+  margin-top: -8px;
+  margin-bottom: 22px;
+}
+
+.tools-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 14px;
+}
+
+.tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  transition: border-color 0.25s, color 0.25s;
+}
+.tool-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.tool-chip span {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.tool-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.tool-icon--stroke { width: 17px; height: 17px; }
+
+.tools-group:nth-of-type(2) { transition-delay: 0.1s; }
+.tools-group:nth-of-type(3) { transition-delay: 0.2s; }
 
 /* ─────────────────────────────────────────
    CONTACT
@@ -532,6 +599,9 @@ body.cur-link #cursor-dot {
 }
 
 .contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.16em;
@@ -540,6 +610,12 @@ body.cur-link #cursor-dot {
   position: relative;
   transition: color 0.2s;
   padding-bottom: 2px;
+}
+
+.contact-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 .contact-link::after {
   content: '';
