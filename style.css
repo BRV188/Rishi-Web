@@ -424,6 +424,9 @@ body.cur-link #cursor-dot {
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--bg-alt);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.35s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.35s ease;
 }
 
 .project-thumb img {
@@ -431,7 +434,30 @@ body.cur-link #cursor-dot {
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1);
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
 }
+
+/* Pop on hover: the frame lifts and grows, the image inside scales
+   slightly past it so the crop feels alive rather than slid.
+   Gated behind (hover: hover) so a tap on touch devices does not
+   leave the card stuck in the popped state. */
+@media (hover: hover) {
+  .project-card:hover .project-thumb {
+    transform: scale(1.035);
+    border-color: var(--accent);
+    box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
+  }
+  .project-card:hover .project-thumb img { transform: scale(1.06); }
+}
+
+/* Keyboard parity — focus gets the same pop as hover. */
+.project-card:focus-visible .project-thumb {
+  transform: scale(1.035);
+  border-color: var(--accent);
+  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
+}
+.project-card:focus-visible .project-thumb img { transform: scale(1.06); }
 
 .project-title {
   font-size: clamp(16px, 1.8vw, 21px);
@@ -674,8 +700,11 @@ body.cur-link #cursor-dot {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
-  .js-scramble { opacity: 1 !important; }
-  .work-row { opacity: 1 !important; transform: none !important; }
+    .js-scramble { opacity: 1 !important; }
+    .work-row { opacity: 1 !important; transform: none !important; }
+    .reveal-up { opacity: 1 !important; transform: none !important; }
+    .project-thumb,
+    .project-thumb img { transform: none !important; }
 }
 
 /* ─────────────────────────────────────────
