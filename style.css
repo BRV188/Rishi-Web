@@ -449,6 +449,17 @@ body.cur-link #cursor-dot {
 }
 .projects-more .resume-btn { margin-top: 0; }
 
+/* Breathing space between Section 04's More Images CTA and Section 05. Both
+   sections stack their own `padding: var(--section-gap) 0`, so the visible
+   gap here is twice the token (280px at desktop) and reads as a hole after
+   the CTA. Trimming only this boundary's bottom padding by ~34% leaves the
+   premium air intact. The ramp is the same clamp() shape as the token so it
+   scales identically at every breakpoint, holding the trim to a steady
+   30-34% rather than over-cutting on small screens. Do not zero it, and do
+   not move it into the `section` rule — every other boundary keeps the full
+   token. */
+#projects { padding-bottom: clamp(32px, 4vw, 44px); }
+
 /* Four equal columns on desktop so the first four videos always sit on a
    single row; the fifth wraps to a second row and stays the same size,
    left-aligned, because every track is 1fr. Fixed tracks (not auto-fit)
