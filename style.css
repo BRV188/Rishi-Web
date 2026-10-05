@@ -399,12 +399,14 @@ body.cur-link #cursor-dot {
 }
 
 /* ─────────────────────────────────────────
-   PROJECTS
-   Thumbnail grid linking out to YouTube. Images are lazy-loaded and
-   sized in markup so the grid does not shift while they arrive.
+   SELECTED WORK
+   Video thumbnail grid. Cards are plain <a> elements pointing at YouTube
+   as a no-JS fallback; main.js upgrades them into a modal viewer.
+   Images are lazy-loaded and sized in markup so the grid never shifts
+   while they arrive.
 ───────────────────────────────────────── */
-/* Sub-label directly under the PROJECTS heading. Mirrors
-   .philosophy-sub's role: quiet, muted, sits above the grid. */
+/* Sub-label directly under the heading. Mirrors .philosophy-sub's role:
+   quiet, muted, sits above the grid. */
 .projects-lede {
   font-family: var(--font-mono);
   font-size: clamp(12px, 1.4vw, 14px);
@@ -415,9 +417,10 @@ body.cur-link #cursor-dot {
 }
 
 /* Four equal columns on desktop so the first four videos always sit on a
-   single row; a fifth video wraps to a second row underneath.
-   Fixed tracks (not auto-fit) are deliberate: auto-fit reflows to three
-   columns at this container width and would break the four-across row. */
+   single row; the fifth wraps to a second row and stays the same size,
+   left-aligned, because every track is 1fr. Fixed tracks (not auto-fit)
+   are deliberate: auto-fit reflows to three columns at this container
+   width and would break the four-across row. */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -425,20 +428,29 @@ body.cur-link #cursor-dot {
 }
 
 .project-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  /* Grid items stretch by default, so all four cards share the row's
-     height. The meta line is pushed to the bottom so the labels stay
-     aligned across cards even when a title wraps to two lines. */
+  /* Grid items stretch by default, so cards in a row share its height.
+     The meta line is pushed down so labels stay aligned across cards
+     even when a longer title wraps to two lines. */
   height: 100%;
 }
 .project-card .project-meta { margin-top: auto; }
 
+.project-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
 .project-thumb {
+  position: relative;
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -458,26 +470,93 @@ body.cur-link #cursor-dot {
   transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
 }
 
-/* Pop on hover: the frame lifts and grows, the image inside scales
-   slightly past it so the crop feels alive rather than slid.
-   Gated behind (hover: hover) so a tap on touch devices does not
-   leave the card stuck in the popped state. */
+/* Dark wash that deepens on hover so the overlay text and play icon
+   stay legible over any thumbnail. */
+.project-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.34) 46%, rgba(0,0,0,0.12) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Small centred play glyph. Grows slightly on hover — kept subtle so the
+   effect reads as cinematic rather than flashy. */
+.project-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.62);
+  background: rgba(0,0,0,0.42);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.86);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+.project-play svg { width: 17px; height: 17px; margin-left: 2px; }
+
+/* Project information that rises into view over the thumbnail. */
+.project-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 14px 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+.project-overlay-cat {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+}
+.project-overlay-play {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Hover: lift the frame, scale the image inside it, fade in the scrim,
+   play icon and info. Gated behind (hover: hover) so tapping a card on a
+   touch device does not leave it stuck in the hovered state. */
 @media (hover: hover) {
   .project-card:hover .project-thumb {
     transform: scale(1.035);
     border-color: var(--accent);
-    box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.55);
   }
-  .project-card:hover .project-thumb img { transform: scale(1.06); }
+  .project-card:hover .project-thumb img { transform: scale(1.07); }
+  .project-card:hover .project-scrim { opacity: 1; }
+  .project-card:hover .project-play { opacity: 1; transform: scale(1); }
+  .project-card:hover .project-overlay { opacity: 1; transform: translateY(0); }
 }
 
-/* Keyboard parity — focus gets the same pop as hover. */
+/* Keyboard parity — focus gets the same treatment as hover. */
 .project-card:focus-visible .project-thumb {
   transform: scale(1.035);
   border-color: var(--accent);
-  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.55);
 }
-.project-card:focus-visible .project-thumb img { transform: scale(1.06); }
+.project-card:focus-visible .project-thumb img { transform: scale(1.07); }
+.project-card:focus-visible .project-scrim { opacity: 1; }
+.project-card:focus-visible .project-play { opacity: 1; transform: scale(1); }
+.project-card:focus-visible .project-overlay { opacity: 1; transform: translateY(0); }
 
 .project-title {
   font-size: clamp(16px, 1.8vw, 21px);
@@ -493,6 +572,103 @@ body.cur-link #cursor-dot {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* ─────────────────────────────────────────
+   PROJECT VIEWER (modal)
+   Native <dialog> handles focus trapping, ESC and inertness. The iframe
+   src is written by main.js on open and cleared on close so playback
+   stops instead of continuing behind the closed modal.
+───────────────────────────────────────── */
+.viewer {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: min(1000px, 92vw);
+  width: 100%;
+  color: var(--text);
+}
+.viewer::backdrop {
+  background: rgba(8, 8, 6, 0.9);
+  backdrop-filter: blur(6px);
+}
+
+.viewer-inner {
+  position: relative;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Open/close animation. Dialog display toggles, so animate opacity and
+   scale from a class rather than relying on a transition alone. */
+.viewer[open] .viewer-inner { animation: viewerIn 0.32s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes viewerIn {
+  from { opacity: 0; transform: scale(0.97) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.viewer-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.viewer-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+.viewer-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.viewer-close:hover { background: rgba(0,0,0,0.8); border-color: #fff; }
+.viewer-close svg { width: 18px; height: 18px; }
+/* The site hides the native cursor in favour of the custom ring, which
+   sits in the normal stacking context and is hidden behind the dialog's
+   top layer. Restore a real cursor inside the viewer. */
+.viewer, .viewer * { cursor: pointer; }
+.viewer-close, .viewer-frame { cursor: pointer; }
+
+.viewer-meta { padding: 20px 22px 22px; }
+.viewer-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.viewer-title {
+  font-size: clamp(17px, 2.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--text);
+}
+.viewer-cat {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 8px;
 }
 
 /* ─────────────────────────────────────────
@@ -557,12 +733,17 @@ body.cur-link #cursor-dot {
   line-height: 1.7;
 }
 
+/* Tablet: four across gets cramped, step down to two columns. */
+@media (max-width: 1024px) {
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 860px) {
   .work-row { grid-template-columns: 44px 1fr; }
   .work-tags { display: none; }
-  /* Two columns get too narrow below this width, so step down to one.
-     The two-column desktop rule is untouched above 860px. */
+  /* Mobile: one immersive full-width column. */
   .project-grid { grid-template-columns: 1fr; }
+  .project-title { font-size: clamp(17px, 4.6vw, 22px); }
 }
 @media (max-width: 480px) {
   .work-row { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px 0; }
@@ -729,6 +910,11 @@ body.cur-link #cursor-dot {
     .reveal-up { opacity: 1 !important; transform: none !important; }
     .project-thumb,
     .project-thumb img { transform: none !important; }
+    /* Keep the hover information readable without motion. */
+    .project-scrim,
+    .project-play,
+    .project-overlay { opacity: 1 !important; transform: none !important; }
+    .viewer[open] .viewer-inner { animation: none !important; }
 }
 
 /* ─────────────────────────────────────────
