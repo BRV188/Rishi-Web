@@ -415,6 +415,9 @@ body.cur-link #cursor-dot {
   color: var(--muted);
   margin-bottom: 28px;
 }
+/* Breathing room above a sub-label that follows a grid (1.2 sits under 1.1).
+   Scoped to a separate class so the 1.1 label keeps its original spacing. */
+.projects-lede--sub { margin-top: 72px; }
 
 /* Four equal columns on desktop so the first four videos always sit on a
    single row; the fifth wraps to a second row and stays the same size,
