@@ -407,6 +407,17 @@ body.cur-link #cursor-dot {
    held four videos; it now holds five, so the column count is 2 to keep
    cards a readable size instead of shrinking them to ~115px tall.
    Fixed tracks (not auto-fit) so the count never varies by viewport. */
+/* Sub-label directly under the PROJECTS heading. Mirrors
+   .philosophy-sub's role: quiet, muted, sits above the grid. */
+.projects-lede {
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
