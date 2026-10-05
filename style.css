@@ -403,10 +403,6 @@ body.cur-link #cursor-dot {
    Thumbnail grid linking out to YouTube. Images are lazy-loaded and
    sized in markup so the grid does not shift while they arrive.
 ───────────────────────────────────────── */
-/* Two equal columns. Was a fixed 4-track single row when the section
-   held four videos; it now holds five, so the column count is 2 to keep
-   cards a readable size instead of shrinking them to ~115px tall.
-   Fixed tracks (not auto-fit) so the count never varies by viewport. */
 /* Sub-label directly under the PROJECTS heading. Mirrors
    .philosophy-sub's role: quiet, muted, sits above the grid. */
 .projects-lede {
@@ -418,9 +414,13 @@ body.cur-link #cursor-dot {
   margin-bottom: 28px;
 }
 
+/* Four equal columns on desktop so the first four videos always sit on a
+   single row; a fifth video wraps to a second row underneath.
+   Fixed tracks (not auto-fit) are deliberate: auto-fit reflows to three
+   columns at this container width and would break the four-across row. */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px 24px;
 }
 
