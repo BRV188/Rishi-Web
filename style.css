@@ -399,7 +399,7 @@ body.cur-link #cursor-dot {
 }
 
 /* ─────────────────────────────────────────
-   SELECTED WORK
+   EDITED WORK (section tag: 04 - Project)
    Video thumbnail grid. Each card is a plain <a> to the video's YouTube
    watch URL with target="_blank", so a click opens YouTube in a new tab
    and this site never loads the YouTube player. Images are lazy-loaded
@@ -569,7 +569,12 @@ body.cur-link #cursor-dot {
 .project-meta {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.16em;
+  /* 0.06em, not the 0.16em used elsewhere. The meta line carries three
+     segments ("Category · 19 min · 919K views"); at 0.16em the longest card
+     needs ~293px inside a 259px track and wraps to two lines, which pushed
+     the row's cards to uneven heights. At 0.06em the longest string needs
+     ~254px, so it stays on one line with room to spare. */
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
 }
