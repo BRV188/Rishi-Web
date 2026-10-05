@@ -416,11 +416,7 @@ body.cur-link #cursor-dot {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
 }
-.project-card.in-view { opacity: 1; transform: translateY(0); }
 
 .project-thumb {
   display: block;
