@@ -423,7 +423,6 @@ body.cur-link #cursor-dot {
 .project-card.in-view { opacity: 1; transform: translateY(0); }
 
 .project-thumb {
-  position: relative;
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -436,29 +435,7 @@ body.cur-link #cursor-dot {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(1);
-  transition: filter 0.4s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
 }
-.project-card:hover .project-thumb img {
-  filter: grayscale(0);
-  transform: scale(1.03);
-}
-.project-card:hover .project-thumb { border-color: var(--accent); }
-
-/* Play badge, drawn rather than pulled from an asset */
-.project-thumb::after {
-  content: '';
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  width: 0;
-  height: 0;
-  border-left: 11px solid var(--accent);
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  transition: transform 0.3s ease;
-}
-.project-card:hover .project-thumb::after { transform: scale(1.25); }
 
 .project-title {
   font-size: clamp(16px, 1.8vw, 21px);
@@ -466,9 +443,7 @@ body.cur-link #cursor-dot {
   letter-spacing: -0.015em;
   line-height: 1.25;
   color: var(--text);
-  transition: color 0.25s;
 }
-.project-card:hover .project-title { color: var(--accent); }
 
 .project-meta {
   font-family: var(--font-mono);
