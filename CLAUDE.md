@@ -74,13 +74,14 @@ Desktop only (`@media (pointer: fine)`). Two elements: `#cursor-ring` (28px blue
 
 ## Section order
 
-Hero → About (01) → Tools (02) → Philosophy (03) → Work (04) → Contact (05). Section numbers in each `.section-tag` must stay sequential if sections are reordered or added/removed.
+Hero → About (01) → Tools (02) → Philosophy (03) → Projects (04) → Work (05) → Contact (06). Section numbers in each `.section-tag` must stay sequential if sections are reordered or added/removed.
 
 ## Content updates
 
 All content is hardcoded in `index.html`.
 
 - **Work**: each `.work-row` is an `<a>` (clickable, links out to the relevant portfolio/drive/site for that category) — copy a block and increment the index to add a category.
+- **Projects**: a `.project-grid` of `.project-card` anchors, each linking out to a YouTube watch URL and showing its thumbnail. Thumbnails come from `i.ytimg.com/vi/<videoId>/maxresdefault.jpg` and must match the video ID in the card's `href`. Keep `loading="lazy"`, `decoding="async"`, explicit `width`/`height`, and empty `alt=""` on every `<img>` — the visible `.project-title` already carries the name, so the image is decorative and duplicating it in `alt` would make screen readers announce it twice. Cards use the same `.reveal-up`-style `.in-view` reveal as `.work-row`, so they must also carry the base `opacity: 0` + `.in-view` override; if you add another animated grid, follow the same contract. Hover treatment is CSS-only: thumbnails desaturate via `filter: grayscale(1)` and re-colour on hover, with a play triangle drawn from borders in `.project-thumb::after` — there is no image asset for it.
 - **About**: the `.about-body` bio, then a `.resume-btn` capsule CTA (document icon + single `View My Resume` label) linking to the Google Drive resume. There is no `.about-statement` lede — it was removed; do not reintroduce one without being asked.
 
   `.resume-btn` deliberately mirrors the `.tool-chip` pill: same `border-radius: 999px`, same `1px solid var(--border)`, same `0.25s` border/color transition, and the icon follows the Tools icon conventions — bare `viewBox="0 0 24 24"`, `fill="currentColor"`, sized to match `.tool-icon` (18px desktop / 16px mobile), no forced `color` so it inherits `--text` and turns accent with the button on hover. The icon does need `fill-rule="evenodd"`: the glyph is a solid document silhouette with the folded corner and the two text rules knocked out as level-1 subpaths, so without evenodd the rules fill solid and vanish into the page. The label is `--font-sans` 14px uppercase (13px at 480px), unlike every other label on the site.
