@@ -403,9 +403,13 @@ body.cur-link #cursor-dot {
    Thumbnail grid linking out to YouTube. Images are lazy-loaded and
    sized in markup so the grid does not shift while they arrive.
 ───────────────────────────────────────── */
+/* Four equal columns on desktop so all four videos always sit on one
+   single row. Fixed track count (not auto-fit) is deliberate:
+   auto-fit reflows to three columns at this container width and pushes
+   the fourth card onto a second row. */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px 24px;
 }
 
@@ -416,7 +420,12 @@ body.cur-link #cursor-dot {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+  /* Grid items stretch by default, so all four cards share the row's
+     height. The meta line is pushed to the bottom so the labels stay
+     aligned across cards even when a title wraps to two lines. */
+  height: 100%;
 }
+.project-card .project-meta { margin-top: auto; }
 
 .project-thumb {
   display: block;
@@ -540,6 +549,9 @@ body.cur-link #cursor-dot {
 @media (max-width: 860px) {
   .work-row { grid-template-columns: 44px 1fr; }
   .work-tags { display: none; }
+  /* Four columns get too narrow below this width, so step down to two.
+     The one-row desktop rule is untouched above 860px. */
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
   .work-row { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px 0; }
